@@ -6,7 +6,8 @@
 #include "linkedList.h"
 #include "file.h"
 
-/*Creates a snake as #-> with the amount of - defined by the size of the snake given by snakeSize*/
+/*Creates a snake with given co-ordinates and body parts from the input file*/
+/*If using other characters than -, |, a variant of > or # it will load it as those however the other code will replace these chars with other chars when the snake moves*/
 Queue *createSnake(char **board, char *fileName)
 {
     Queue *snake;
@@ -30,7 +31,8 @@ Queue *createSnake(char **board, char *fileName)
     freeSnakeBodyParts(snakeBody, snake->size);
     return snake;
 }
-
+/*Wraps a number of other functions to determine where to place the head and tail of the snake during movement*/
+/*Also checks if the player has lost or eaten a fruit and returns that to the input loop so it can display the appropriate message*/
 int moveSnake(Queue *snake, char **board, int direction, int rows, int cols)
 {
     int status;
@@ -45,7 +47,7 @@ int moveSnake(Queue *snake, char **board, int direction, int rows, int cols)
     int newTailX = *getNext(tail)->data[0];
     int newTailY = *getNext(tail)->data[1];
     status = checkLoss(headX, headY, board, rows, cols, snake, direction);
-    if (status != 0)
+    if (status != 0 && status != 3)
     {
         placeBodyBehindHead(board, headX, headY, direction);
         switch (direction)
@@ -76,7 +78,7 @@ int moveSnake(Queue *snake, char **board, int direction, int rows, int cols)
     }
     return status;
 }
-
+/*Grow the snake by one when a fruit is eaten by enqueuing another co-ordinate and updating the board*/
 void growSnake(Queue *snake, char **board, int direction)
 {
     int i = 0;
@@ -90,7 +92,8 @@ void growSnake(Queue *snake, char **board, int direction)
         i += 1;
     }
 }
-
+/*A helper function for growSnake to ensure that the snake doesn't move out of bounds when eating the fruit*/
+/*Without this it is possible to lose the game because the snake head is placed beyond the fruit in the border*/
 int checkMoveIsLegal(int i, char **board, int headX, int headY, Queue *snake)
 {
     int status = 0;
@@ -137,7 +140,7 @@ int checkMoveIsLegal(int i, char **board, int headX, int headY, Queue *snake)
     }
     return status;
 }
-
+/*Place the relevant body part as a char behind the head when it moves*/
 void placeBodyBehindHead(char **board, int x, int y, int direction)
 {
     switch (direction)
@@ -159,6 +162,7 @@ void placeBodyBehindHead(char **board, int x, int y, int direction)
     }
 }
 
+/*Helper function for moveSnake which determins if the snakes next position will be an illegal move and returns 0 if it would enter a game over state*/
 int checkLoss(int x, int y, char **board, int rows, int cols, Queue *snake, int direction)
 {
     int newX = x;
@@ -185,20 +189,29 @@ int checkLoss(int x, int y, char **board, int rows, int cols, Queue *snake, int 
         Node *next = getPrev(head);
         int previousPositionX = *next->data[0];
         int previousPositionY = *next->data[1];
+        /*Status code 3 just results in the program performing another input loop while not changing anything*/
         /*If the new co-ordinate is the border or is backwards don't move the snake and fire a warning message*/
         if (previousPositionX == newX && previousPositionY == newY)
         {
             printf("You can't move backwards!\n");
             awaitingInput();
+            status = 3;
         }
-        if (newX < 1 || newX >= cols - 1 || newY < 1 || newY >= rows - 1)
+        /*If the new co-ordinate is the border don't move the snake and fire a warning message*/
+        else if (newX < 1 || newX >= cols - 1 || newY < 1 || newY >= rows - 1)
         {
             printf("Cannot escape the map\n");
             awaitingInput();
+            status = 3;
         }
-        printf("Game over!\n");
-        status = 0;
+        /*Player has lost end the game*/
+        else
+        {
+            printf("Game over!\n");
+            status = 0;
+        }
     }
+    /*If it is fruit return 2 to grow the snake or win the game*/
     else if (board[newY][newX] == '&')
     {
         status = 2;
@@ -206,6 +219,7 @@ int checkLoss(int x, int y, char **board, int rows, int cols, Queue *snake, int 
     return status;
 }
 
+/*Checks if the snake head has hit a fruit and returns 1(True) if it has*/
 int fruitCollected(char **board, int headX, int headY)
 {
     int status = 0;

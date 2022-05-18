@@ -60,6 +60,8 @@ void createBorder(char **board, int rows, int cols)
     int j;
     for (i = 0; i < rows; i++)
     {
+        /*It is not necessary to have this for an implementation with * border however I originally wrote this to have a _ and | border before looking at the sample videos*/
+        /*It doesn't affect functionality so can be left in the code*/
         for (j = 0; j < cols; j++)
         {
             /*Top*/

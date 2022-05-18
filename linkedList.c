@@ -3,11 +3,13 @@
 
 typedef struct LinkedListNode
 {
+    /* While there was eventually an email that clarified that these nodes are meant to have void pointers it was released too late for me to change my code and hence this remains non generic */
     int **data;
     struct LinkedListNode *next;
     struct LinkedListNode *prev;
 } Node;
 
+/*Creates a node with empty data to be initialised with values later*/
 Node *createNode(int x, int y)
 {
     Node *node = (Node *)malloc(sizeof(Node));
@@ -26,7 +28,7 @@ typedef struct LinkedList
     Node *head;
     Node *tail;
 } List;
-
+/*Creates a list with empty pointers to be initialised later*/
 List *createList()
 {
     List *list = (List *)malloc(sizeof(List));
@@ -76,17 +78,15 @@ void setPrev(Node *node, Node *node2)
 {
     node->prev = node2;
 }
-
+/*Frees all data from a node*/
 void freeNode(Node *node)
 {
-    /* printf("freeing node\n");*/
-    /* printf("%d %d\n", *node->data[0], *node->data[1]);*/
     free(node->data[1]);
     free(node->data[0]);
     free(node->data);
     free(node);
 }
-
+/*Loop through the list and free each node one by one from memory*/
 void freeAllNodes(Node *node)
 {
     if (node->next != NULL)
@@ -101,8 +101,8 @@ void freeAllNodes(Node *node)
         }
     }
     freeNode(node);
-    return;
 }
+/*Free both or one of the two head and tail pointers in the list and the list itself from memory*/
 void freeList(List *list)
 {
     if (list->head->next == NULL)

@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
     int fruitToWin;
     char **board;
     int **rowsAndColumns;
+    /*The implementation of this if/else statements is required to comply with the coding standard of one return statement per function.*/
     if (argc == 2)
     {
         fruitToWin = atoi(argv[1]);
