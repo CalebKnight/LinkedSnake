@@ -46,44 +46,46 @@ void RunInputLoop(char **board, int rows, int cols, int fruitToWin, char *fileNa
 {
     int status = 1;
     int direction;
-    int i;
+    int i = 0;
     Queue *snake = createSnake(board, fileName);
     printf("Welcome to the snake game\n");
     printBoard(board, rows, cols);
-    for (i = 0; i < fruitToWin; i++)
+    placeFood(board, rows, cols);
+    status = 1;
+    while (status != 0 && i != fruitToWin - 1)
     {
-        placeFood(board, rows, cols);
-        status = 1;
-        while (status == 1)
+        system("clear");
+        fflush(stdin);
+        printBoard(board, rows, cols);
+        disableBuffer();
+        getInput(&direction);
+        if (direction == 0)
         {
-            /* system("clear");*/
-            /* fflush(stdin);*/
-            printBoard(board, rows, cols);
-            disableBuffer();
-            getInput(&direction);
-            if (direction == 0)
-            {
-                /*Awaits verification from user before continuing to ensure they have read the error message*/
-                printf("Invalid input please use WASD\n");
-                awaitingInput();
-            }
-            else
-            {
-                status = moveSnake(snake, board, direction, rows, cols);
-            }
-            enableBuffer();
-        }
-        if (status == 0)
-        {
-            printf("You lost\n");
-            break;
+            /*Awaits verification from user before continuing to ensure they have read the error message*/
+            printf("Invalid input please use WASD\n");
+            awaitingInput();
         }
         else
         {
-            growSnake(snake, board, direction);
+            status = moveSnake(snake, board, direction, rows, cols);
         }
-        printBoard(board, rows, cols);
+        if (status == 2)
+        {
+            growSnake(snake, board, direction);
+            placeFood(board, rows, cols);
+            i++;
+        }
+        enableBuffer();
     }
+    if (status == 0)
+    {
+        printf("You lost\n");
+    }
+    else if (status == 2)
+    {
+        printf("You won\n");
+    }
+    i++;
 
     freeQueue(snake);
     freeBoard(board, rows);

@@ -6,15 +6,14 @@
 int **getRowsAndColumns(char *fileName)
 {
 
-    char *string = (char *)malloc(sizeof(char) * 6);
-    int **rowsAndColumns = (int **)malloc(2 * sizeof(int *));
+    char *string = (char *)malloc(sizeof(char) * 7);
+    int **rowsAndColumns = (int **)malloc(sizeof(int *) * 2);
     FILE *file = fopen(fileName, "r");
     rowsAndColumns[0] = (int *)malloc(sizeof(int));
     rowsAndColumns[1] = (int *)malloc(sizeof(int));
-    string = fgets(string, 6, file);
+    string = fgets(string, 7, file);
     *rowsAndColumns[0] = intFromSubstring(string, 0);
     *rowsAndColumns[1] = intFromSubstring(string, 3);
-    printf("%d %d rows/cols", *rowsAndColumns[0], *rowsAndColumns[1]);
     fclose(file);
     free(string);
 
@@ -34,62 +33,43 @@ int intFromSubstring(char *string, int start)
     return number;
 }
 
-char **getSnakeBodyParts(int snakeSize, char *fileName)
+void getSnakeBodyParts(char *snakeBody, int snakeSize, char *fileName)
 {
-    char **snakeBody = (char **)malloc(sizeof(char *) * snakeSize);
-    char *tempString = (char *)malloc(sizeof(char) * 6);
     FILE *file = fopen(fileName, "r");
+    char *tempString = (char *)malloc(sizeof(char) * 7);
     int i;
+    fgets(tempString, 7, file);
     for (i = 0; i < snakeSize; i++)
     {
-        snakeBody[i] = (char *)malloc(sizeof(char));
-    }
-    fgets(tempString, 6, file);
-    fprintf(stderr, "%sTHIS", tempString);
-
-    i = 0;
-    while (!feof(file))
-    {
-        char *string = (char *)malloc(sizeof(char) * 6);
-        fgets(string, 6, file);
-        *snakeBody[i] = string[5];
-        i += 1;
-        free(string);
+        fgets(tempString, 7, file);
+        snakeBody[i] = tempString[4];
     }
     free(tempString);
     fclose(file);
-    return (snakeBody);
 }
 
 void queueCordsFromFile(Queue *queue, char *fileName)
 {
     FILE *file = fopen(fileName, "r");
-    char *tempString = (char *)malloc(sizeof(char) * 4);
+    char *tempString = (char *)malloc(sizeof(char) * 6);
     int x;
     int y;
+    int c;
     /* Skip first line*/
-    fgets(tempString, 4, file);
-    while (!feof(file))
+    fgets(tempString, 6, file);
+    while ((c = fgetc(file)) != EOF)
     {
-        char *cords = (char *)malloc(sizeof(char) * 4);
-        fgets(cords, 4, file);
-        x = cords[0] - '0';
-        y = cords[2] - '0';
-
+        fgets(tempString, 6, file);
+        x = tempString[2] - '0' + 1;
+        y = tempString[0] - '0' + 1;
         enqueue(queue, x, y);
-        free(cords);
     }
     free(tempString);
     fclose(file);
 }
 
-void freeSnakeBodyParts(char **snakeBody, int snakeSize)
+void freeSnakeBodyParts(char *snakeBody, int snakeSize)
 {
-    int i;
-    for (i = 0; i < snakeSize; i++)
-    {
-        free(snakeBody[i]);
-    }
     free(snakeBody);
 }
 

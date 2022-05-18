@@ -9,17 +9,23 @@
 /*Creates a snake as #-> with the amount of - defined by the size of the snake given by snakeSize*/
 Queue *createSnake(char **board, char *fileName)
 {
-    Queue *snake = createQueue();
-    char **snakeBody = getSnakeBodyParts(snake->size, fileName);
+    Queue *snake;
+    char *snakeBody;
     int i;
-    Node *position = snake->queue->head;
+    Node *position;
+    snake = createQueue();
     queueCordsFromFile(snake, fileName);
+    position = snake->queue->head;
+    snakeBody = (char *)malloc(sizeof(char) * snake->size);
+    getSnakeBodyParts(snakeBody, snake->size, fileName);
 
     for (i = 0; i < snake->size; i++)
     {
         int x = *position->data[0];
         int y = *position->data[1];
-        board[y][x] = *snakeBody[i];
+        printf("%d %d\n", x, y);
+        printf("%c\n", snakeBody[i]);
+        board[y][x] = snakeBody[i];
         position = position->next;
     }
     freeSnakeBodyParts(snakeBody, snake->size);
@@ -192,12 +198,8 @@ int checkLoss(int x, int y, char **board, int rows, int cols, Queue *snake, int 
             printf("Cannot escape the map\n");
             awaitingInput();
         }
-        /*If it's not unbeatable then end the game*/
-        if (UNBEATABLE != 1)
-        {
-            printf("Game over!\n");
-            status = 0;
-        }
+        printf("Game over!\n");
+        status = 0;
     }
     else if (board[newY][newX] == '&')
     {

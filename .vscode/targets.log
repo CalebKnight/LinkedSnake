@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 17 11:25:57 2022
+# Make data base, printed on Wed May 18 22:34:50 2022
 
 # Variables
 
@@ -55,7 +55,7 @@ PATH = /home/cknight/.vscode-server/bin/da15b6fd3ef856477bf6f4fb29ba1b7af717770d
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-80fbad95-c1ed-4e01-8455-96cf3a6698d7.sock
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-f2a711cb-fa84-4a7f-9b54-6d4836faf531.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -105,7 +105,7 @@ NAME = Code
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/Caleb/.vscode/extensions/ms-vscode-remote.remote-wsl-0.66.2
+VSCODE_WSL_EXT_LOCATION = /mnt/c/Users/Caleb/.vscode/extensions/ms-vscode-remote.remote-wsl-0.66.3
 # default
 MAKE_COMMAND := make
 # default
@@ -159,9 +159,9 @@ MOTD_SHOWN = update-motd
 
 # Directories
 
-# . (device 2064, inode 48986): 25 files, no impossibilities.
+# . (device 2064, inode 48986): 37 files, no impossibilities.
 
-# 25 files, no impossibilities in 1 directories.
+# 37 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -175,6 +175,13 @@ snake.c:
 #  Modification time never checked.
 #  File has not been updated.
 
+random.o: random.c random.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 13):
+	$(CC) -c -Wall -ansi -pedantic -Werror random.c -o random.o
+
 # Not a target:
 game.c:
 #  Implicit rule search has not been done.
@@ -187,6 +194,13 @@ all:
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has not been updated.
+
+queue.o: queue.c queue.h linkedList.c linkedList.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 31):
+	$(CC) -c -Wall -ansi -pedantic -Werror queue.c -o queue.o
 
 # Not a target:
 linkedList.h:
@@ -233,16 +247,16 @@ terminal.h:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-09 17:46:11.251140327
+#  Last modified 2022-05-18 22:34:41.130792292
 #  File has been updated.
 #  Successfully updated.
 
-UNBEATABLE: main.c random.c game.c snake.c terminal.c board.c linkedList.c main.h random.h game.h snake.h terminal.h board.h linkedList.h
+UNBEATABLE: main.o random.o game.o snake.o terminal.o board.o linkedList.o queue.o file.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 5):
-	$(CC) -Wall -ansi -pedantic -Werror main.c random.c game.c snake.c terminal.c board.c linkedList.c -D UNBEATABLE -o snake 
+	$(CC) -o snake main.o random.o game.o snake.o terminal.o board.o linkedList.o queue.o file.o -D UNBEATABLE
 
 # Not a target:
 random.c:
@@ -255,6 +269,20 @@ queue.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+
+file.o: file.c file.h queue.c queue.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 34):
+	$(CC) -c -Wall -ansi -pedantic -Werror file.c -o file.o
+
+board.o: board.c board.h random.c random.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 25):
+	$(CC) -c -Wall -ansi -pedantic -Werror board.c -o board.o
 
 # Not a target:
 random.h:
@@ -274,13 +302,40 @@ queue.h:
 #  Modification time never checked.
 #  File has not been updated.
 
-snake: main.c random.c game.c snake.c terminal.c board.c linkedList.c queue.c file.c main.h random.h game.h snake.h terminal.h board.h linkedList.h queue.h file.h
+linkedList.o: linkedList.c linkedList.h
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
- 
+#  recipe to execute (from 'makefile', line 28):
+	$(CC) -c -Wall -ansi -pedantic -Werror linkedList.c -o linkedList.o
+
+snake: main.o random.o game.o snake.o terminal.o board.o linkedList.o queue.o file.o
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 #  recipe to execute (from 'makefile', line 3):
-	$(CC) -Wall -ansi -pedantic -Werror main.c random.c game.c snake.c terminal.c board.c linkedList.c queue.c file.c -o snake 
+	$(CC) -o snake main.o random.o game.o snake.o terminal.o board.o linkedList.o queue.o file.o
+
+snake.o: snake.c snake.h game.c game.h queue.c queue.h linkedList.c linkedList.h file.c file.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 19):
+	$(CC) -c -Wall -ansi -pedantic -Werror snake.c -o snake.o
+
+game.o: game.c game.h random.c random.h board.c board.h snake.c snake.h terminal.c terminal.h queue.c queue.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 16):
+	$(CC) -c -Wall -ansi -pedantic -Werror game.c -o game.o
+
+main.o: main.c main.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 10):
+	$(CC) -c -Wall -ansi -pedantic -Werror main.c -o main.o
 
 # Not a target:
 file.c:
@@ -293,6 +348,13 @@ board.c:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+
+terminal.o: terminal.c terminal.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 22):
+	$(CC) -c -Wall -ansi -pedantic -Werror terminal.c -o terminal.o
 
 # Not a target:
 file.h:
@@ -313,19 +375,19 @@ linkedList.c:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=24/1024=2%, Rehash=0, Collisions=2/66=3%
+# Load=33/1024=3%, Rehash=0, Collisions=2/112=2%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 31 / storage = 265 B / avg = 8 B
-# current buf: size = 8162 B / used = 265 B / count = 31 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 42 / storage = 358 B / avg = 8 B
+# current buf: size = 8162 B / used = 358 B / count = 42 / avg = 8 B
 
-# strcache performance: lookups = 70 / hit rate = 55%
+# strcache performance: lookups = 128 / hit rate = 67%
 # hash-table stats:
-# Load=31/8192=0%, Rehash=0, Collisions=1/70=1%
-# Finished Make data base on Tue May 17 11:25:57 2022
+# Load=42/8192=1%, Rehash=0, Collisions=1/128=1%
+# Finished Make data base on Wed May 18 22:34:50 2022
 
  
