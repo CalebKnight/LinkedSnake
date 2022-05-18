@@ -18,7 +18,6 @@ Queue *createSnake(char **board, char *fileName)
     position = snake->queue->head;
     snakeBody = (char *)malloc(sizeof(char) * snake->size);
     getSnakeBodyParts(snakeBody, snake->size, fileName);
-
     for (i = 0; i < snake->size; i++)
     {
         int x = *position->data[0];
@@ -182,7 +181,6 @@ int checkLoss(int x, int y, char **board, int rows, int cols, Queue *snake, int 
     }
     if ((newX < 1 || newX >= cols - 1 || newY < 1 || newY >= rows - 1 || board[newY][newX] != ' ') && board[newY][newX] != '&')
     {
-
         Node *head = getTail(snake->queue);
         Node *next = getPrev(head);
         int previousPositionX = *next->data[0];

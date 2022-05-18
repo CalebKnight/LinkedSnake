@@ -52,7 +52,7 @@ void RunInputLoop(char **board, int rows, int cols, int fruitToWin, char *fileNa
     printBoard(board, rows, cols);
     placeFood(board, rows, cols);
     status = 1;
-    while (status != 0 && i != fruitToWin - 1)
+    while (status != 0 && i != fruitToWin)
     {
         system("clear");
         fflush(stdin);

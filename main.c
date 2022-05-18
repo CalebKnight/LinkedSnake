@@ -13,9 +13,18 @@ int main(int argc, char const *argv[])
 
     int rows;
     int cols;
-    int fruitToWin = 5;
+    int fruitToWin;
     char **board;
     int **rowsAndColumns;
+    if (argc == 2)
+    {
+        fruitToWin = atoi(argv[1]);
+    }
+    else
+    {
+        printf("Please enter the number of fruits to win\n");
+        return 0;
+    }
     /* If the arguments are entered incorrectly tells the user the correct syntax so they can type it in again*/
 
     rowsAndColumns = getRowsAndColumns("snake.txt");
