@@ -22,21 +22,24 @@ int main(int argc, char const *argv[])
     }
     else
     {
+
         printf("Please enter the number of fruits to win\n");
-        return 0;
+        fruitToWin = 0;
     }
-    /* If the arguments are entered incorrectly tells the user the correct syntax so they can type it in again*/
-
-    rowsAndColumns = getRowsAndColumns("snake.txt");
-    rows = *rowsAndColumns[0];
-    cols = *rowsAndColumns[1];
-
-    /*Initialise board with height of rows and width of columns*/
-
-    board = initBoard(rows, cols);
-    initRandom();
-    /*This Loop calls all the functions related to generation of the snake and it's movement in a seperate file for readability in main*/
-    RunInputLoop(board, rows, cols, fruitToWin, "snake.txt");
-    freeRowsAndColumns(rowsAndColumns);
+    if (fruitToWin > 1)
+    {
+        rowsAndColumns = getRowsAndColumns("snake.txt");
+        rows = *rowsAndColumns[0];
+        cols = *rowsAndColumns[1];
+        board = initBoard(rows, cols);
+        initRandom();
+        /*This Loop calls all the functions related to generation of the snake and it's movement in a seperate file for readability in main*/
+        RunInputLoop(board, rows, cols, fruitToWin, "snake.txt");
+        freeRowsAndColumns(rowsAndColumns);
+    }
+    else
+    {
+        printf("Please enter a number greater than 1\n");
+    }
     return 0;
 }
