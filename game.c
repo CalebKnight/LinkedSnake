@@ -57,6 +57,7 @@ void RunInputLoop(char **board, int rows, int cols, int fruitToWin, char *fileNa
         system("clear");
         fflush(stdin);
         printBoard(board, rows, cols);
+        printf("Food eaten %d/%d\n", i, fruitToWin);
         disableBuffer();
         getInput(&direction);
         if (direction == 0)
